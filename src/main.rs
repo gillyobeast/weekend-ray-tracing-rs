@@ -1,8 +1,9 @@
-mod vec3;
-
 use std::fs::File;
 use std::io::Write;
 use std::time::SystemTime;
+
+mod color;
+mod vec3;
 
 fn main() {
     let start = SystemTime::now();
