@@ -18,11 +18,24 @@ impl Vec3 {
         Self { x, y, z }
     }
 
-    fn length(self) -> f64 {
+    fn length(&self) -> f64 {
         self.length_squared().sqrt()
     }
-    fn length_squared(self) -> f64 {
+    fn length_squared(&self) -> f64 {
         self.x * self.x + self.y * self.y + self.z * self.z
+    }
+
+    fn cross(&self, rhs: &Self) -> Self {
+        Self {
+            x: self.y * rhs.z - self.z * rhs.y,
+            y: self.z * rhs.x - self.x * rhs.z,
+            z: self.x * rhs.y - self.y * rhs.x,
+        }
+    }
+
+    fn unit_vector(self) -> Self {
+        let x = self.length();
+        self / x
     }
 }
 
@@ -69,15 +82,11 @@ impl Div<f64> for Vec3 {
     }
 }
 
-// dot product
-// impl<T> Mul<Vec3<T>> for Vec3<T>
-// where
-//     T: Mul<Output = T>,
-//     T: Add<Output = T>,
-// {
-//     type Output = T;
-//
-//     fn mul(self, other: Vec3<T>) -> T {
-//         self.x * other.x + self.y * other.y + self.z * other.z
-//     }
-// }
+/// dot product
+impl Mul<Vec3> for Vec3 {
+    type Output = f64;
+
+    fn mul(self, other: Vec3) -> f64 {
+        self.x * other.x + self.y * other.y + self.z * other.z
+    }
+}
