@@ -1,4 +1,8 @@
+use std::fs::File;
+use std::io::Write;
+
 fn main() {
+    let mut image = File::create("image.ppm").unwrap();
 
     // image
     let image_width = 256;
@@ -6,7 +10,7 @@ fn main() {
 
     // render
 
-    println!("P3\n{image_width} {image_height}\n255");
+    writeln!(&mut image, "P3\n{image_width} {image_height}\n255").unwrap();
 
     for j in 0..image_height {
         for i in 0..image_width {
@@ -18,7 +22,7 @@ fn main() {
             let g = (255.99 * g) as i32;
             let b = (255.99 * b) as i32;
 
-            println!("{r} {g} {b}");
+            writeln!(&mut image, "{r} {g} {b}").unwrap();
         }
     }
 }
