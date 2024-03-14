@@ -5,8 +5,8 @@ use std::time::SystemTime;
 use color::{write, Colour};
 
 mod color;
-mod vec3;
 mod ray;
+mod vec3;
 
 fn main() {
     let start = SystemTime::now();
@@ -15,8 +15,18 @@ fn main() {
     image.set_len(0).unwrap();
 
     // image
-    let image_width = 256;
-    let image_height = 256;
+    let ideal_aspect_ratio = 16.0 / 9.0;
+    let image_width = 400;
+
+    // calculate image height
+    let image_height = int(float(image_width) / ideal_aspect_ratio);
+    let image_height = if image_height < 1 { 1 } else { image_height };
+
+    let effective_aspect_ratio = float(image_width) / float(image_height);
+
+    // viewport
+    let viewport_height = 2.0;
+    let viewport_width = viewport_height * effective_aspect_ratio;
 
     // render
 
@@ -36,6 +46,10 @@ fn main() {
     }
     println!("\rDone!                    ");
     println!("took {:?}", start.elapsed().expect("unknown"));
+}
+
+fn int(f: f64) -> i32 {
+    f as i32
 }
 
 fn float(i: i32) -> f64 {
