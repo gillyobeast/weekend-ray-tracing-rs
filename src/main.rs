@@ -19,7 +19,7 @@ fn main() {
 
     // image
     let ideal_aspect_ratio = 16.0 / 9.0;
-    let image_width = 400;
+    let image_width = 200;
 
     // calculate image height
     let image_height = int(float(image_width) / ideal_aspect_ratio);
@@ -43,7 +43,7 @@ fn main() {
 
     // calculate location of upper-left pixel
     let viewport_upper_left =
-        camera_center - Vec3::new(0.0, 0.0, focal_length) - viewport_u / 2.0 - viewport_v / 2.0;
+        camera_center - Vec3::new(0.0, 0.0, focal_length) - (viewport_u / 2.0) - (viewport_v / 2.0);
 
     let pixel_00_location = viewport_upper_left + (pixel_delta_u + pixel_delta_v) / 2.0;
 

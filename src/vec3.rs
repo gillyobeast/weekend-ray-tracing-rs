@@ -1,6 +1,8 @@
+use std::fmt::Debug;
 use std::ops::{Add, Div, Mul, Neg, Sub};
 
 // unsure if pub is a good idea...
+#[derive(Debug)]
 pub(crate) struct Vec3 {
     pub(crate) x: f64,
     pub(crate) y: f64,
@@ -112,3 +114,49 @@ impl Clone for Vec3 {
 }
 
 impl Copy for Vec3 {}
+
+impl PartialEq for Vec3 {
+    fn eq(&self, other: &Self) -> bool {
+        self.x == other.x && self.y == other.y && self.z == other.z
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn dot_product() {
+        let vec = Vec3::origin();
+        assert_eq!(vec * vec, 0.0);
+
+        let vec = Vec3::new(1.0, 1.0, 1.0);
+        assert_eq!(vec * vec, 3.0);
+
+        let vec1 = Vec3::new(1.0, 0.0, 0.0);
+        let vec2 = Vec3::new(0.0, 1.0, 0.0);
+        assert_eq!(vec1 * vec2, 0.0);
+
+        let vec1 = Vec3::new(1.0, 1.0, 0.0);
+        assert_eq!(vec1 * vec2, 1.0);
+    }
+
+    #[test]
+    fn add() {
+        let vec = Vec3::origin();
+        assert_eq!(vec + vec, vec);
+
+        let vec = Vec3::new(1.0, 1.0, 1.0);
+        assert_eq!(vec + vec, Vec3::new(2.0, 2.0, 2.0));
+
+        assert_eq!(
+            Vec3::new(1.0, 0.0, 0.0) + Vec3::new(0.0, 1.0, 0.0),
+            Vec3::new(1.0, 1.0, 0.0)
+        );
+
+        assert_eq!(
+            Vec3::new(1.0, 1.0, 0.0) + Vec3::new(0.0, 1.0, 0.0),
+            Vec3::new(1.0, 2.0, 0.0)
+        );
+    }
+}
