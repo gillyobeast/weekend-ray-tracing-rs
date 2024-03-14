@@ -26,7 +26,7 @@ fn main() {
         for i in 0..image_width {
             let colour = Colour::new(
                 float(i) / float(image_width - 1),
-                float(j) / float(image_width - 1),
+                float(j) / float(image_height - 1),
                 0.0,
             );
 
