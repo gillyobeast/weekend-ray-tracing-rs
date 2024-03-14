@@ -67,8 +67,14 @@ fn main() {
     println!("took {:?}", start.elapsed().expect("unknown"));
 }
 
-fn ray_colour(_ray: Ray) -> Colour {
-    Colour::origin()
+const BLUE: Colour = Colour::new(0.5, 0.7, 1.0);
+const WHITE: Colour = Colour::new(1.0, 1.0, 1.0);
+
+fn ray_colour(ray: Ray) -> Colour {
+    let unit_direction = ray.direction().unit_vector();
+
+    let a = (unit_direction.y + 1.0) / 2.0;
+    WHITE * (1.0 - a) + BLUE * a
 }
 
 fn int(f: f64) -> i32 {

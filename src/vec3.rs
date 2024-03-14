@@ -16,7 +16,7 @@ impl Vec3 {
             z: 0.0,
         }
     }
-    pub(crate) fn new(x: f64, y: f64, z: f64) -> Self {
+    pub(crate) const fn new(x: f64, y: f64, z: f64) -> Self {
         Self { x, y, z }
     }
 
@@ -35,7 +35,7 @@ impl Vec3 {
         }
     }
 
-    fn unit_vector(self) -> Self {
+    pub(crate) fn unit_vector(self) -> Self {
         let x = self.length();
         self / x
     }
