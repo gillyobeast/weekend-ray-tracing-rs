@@ -1,5 +1,4 @@
-use std::ops::{Add, Div, Mul, Neg};
-
+use std::ops::{Add, Div, Mul, Neg, Sub};
 
 // unsure if pub is a good idea...
 pub(crate) struct Vec3 {
@@ -10,7 +9,7 @@ pub(crate) struct Vec3 {
 pub(crate) type Point3 = Vec3;
 
 impl Vec3 {
-    fn origin() -> Self {
+    pub fn origin() -> Self {
         Self {
             x: 0.0,
             y: 0.0,
@@ -65,6 +64,18 @@ impl Add for Vec3 {
     }
 }
 
+impl Sub for Vec3 {
+    type Output = Self;
+
+    fn sub(self, rhs: Vec3) -> Self {
+        Self {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.z - rhs.z,
+        }
+    }
+}
+
 impl Mul<f64> for Vec3 {
     type Output = Vec3;
 
@@ -93,3 +104,11 @@ impl Mul<Vec3> for Vec3 {
         self.x * other.x + self.y * other.y + self.z * other.z
     }
 }
+
+impl Clone for Vec3 {
+    fn clone(&self) -> Self {
+        *self
+    }
+}
+
+impl Copy for Vec3 {}
