@@ -6,6 +6,7 @@ use color::{write, Colour};
 
 mod color;
 mod vec3;
+mod ray;
 
 fn main() {
     let start = SystemTime::now();

@@ -7,6 +7,7 @@ pub(crate) struct Vec3 {
     pub(crate) y: f64,
     pub(crate) z: f64,
 }
+pub(crate) type Point3 = Vec3;
 
 impl Vec3 {
     fn origin() -> Self {
