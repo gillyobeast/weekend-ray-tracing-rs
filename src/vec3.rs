@@ -159,4 +159,15 @@ mod tests {
             Vec3::new(1.0, 2.0, 0.0)
         );
     }
+
+    #[test]
+    fn length() {
+        let all_twos = Vec3::new(2.0, 2.0, 2.0);
+        assert_eq!(all_twos.length_squared(), 12.0);
+        assert_eq!(all_twos.length(), 12.0_f64.sqrt());
+
+        let all_ones = Vec3::new(1.0, 1.0, 1.0);
+        assert_eq!(all_ones.length_squared(), 3.0);
+        assert_eq!(all_ones.length(), 3.0_f64.sqrt());
+    }
 }
