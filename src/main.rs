@@ -69,8 +69,23 @@ fn main() {
 
 const BLUE: Colour = Colour::new(0.5, 0.7, 1.0);
 const WHITE: Colour = Colour::new(1.0, 1.0, 1.0);
+const RED: Colour = Colour::new(1.0, 0.0, 0.0);
+
+fn hit_sphere(center: Vec3, radius: f64, ray: &Ray) -> bool {
+    let oc = ray.origin() - center;
+    let a = ray.direction() * ray.direction();
+    let b = 2.0 * (oc * ray.direction());
+    let c = (oc * oc) - (radius * radius);
+
+    let discriminant = (b * b) - (4.0 * a * c);
+    discriminant > 0.0
+}
 
 fn ray_colour(ray: Ray) -> Colour {
+    if hit_sphere(Point3::new(0.0, 0.0, -1.0), -0.5, &ray) {
+        return RED;
+    }
+
     let unit_direction = ray.direction().unit_vector();
 
     let a = (unit_direction.y + 1.0) / 2.0;
