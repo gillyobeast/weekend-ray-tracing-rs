@@ -25,8 +25,8 @@ fn main() {
         print!("\rScanlines remaining: {}  ", image_height - j);
         for i in 0..image_width {
             let colour = Colour::new(
-                (i as f64) / (image_width as f64 - 1.0),
-                (j as f64) / (image_width as f64 - 1.0),
+                float(i) / float(image_width - 1),
+                float(j) / float(image_width - 1),
                 0.0,
             );
 
@@ -35,4 +35,8 @@ fn main() {
     }
     println!("\rDone!                    ");
     println!("took {:?}", start.elapsed().expect("unknown"));
+}
+
+fn float(i: i32) -> f64 {
+    i as f64
 }
