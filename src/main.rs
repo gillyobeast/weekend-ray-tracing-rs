@@ -19,7 +19,7 @@ fn main() {
 
     // image
     let ideal_aspect_ratio = 16.0 / 9.0;
-    let image_width = 200;
+    let image_width = 100;
 
     // calculate image height
     let image_height = int(float(image_width) / ideal_aspect_ratio);
@@ -35,7 +35,7 @@ fn main() {
 
     // calculate vectors across horizontal and vertical edges of viewport
     let viewport_u = Vec3::new(viewport_width, 0.0, 0.0);
-    let viewport_v = Vec3::new(0.0, -viewport_width, 0.0);
+    let viewport_v = Vec3::new(0.0, -viewport_height, 0.0);
 
     //calculate horizontal and vertical delta vectors from px to px
     let pixel_delta_u = viewport_u / (image_width as f64);
