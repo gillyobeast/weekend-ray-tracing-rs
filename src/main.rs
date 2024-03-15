@@ -73,15 +73,16 @@ const RED: Colour = Colour::new(1.0, 0.0, 0.0);
 
 fn hit_sphere(center: Vec3, radius: f64, ray: &Ray) -> f64 {
     let oc = ray.origin() - center;
-    let a = ray.direction() * ray.direction();
-    let b = 2.0 * (oc * ray.direction());
-    let c = (oc * oc) - (radius * radius);
+    let a = ray.direction().length_squared();
+    let half_b = (oc * ray.direction());
+    let c = oc.length_squared() - radius * radius;
 
-    let discriminant = (b * b) - (4.0 * a * c);
+    let discriminant = (half_b * half_b) - (a * c);
+
     if discriminant < 0. {
         -1.
     } else {
-        (-b - discriminant.sqrt()) / (2. / a)
+        (-half_b - discriminant.sqrt()) / a
     }
 }
 
