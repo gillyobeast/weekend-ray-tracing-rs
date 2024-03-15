@@ -19,7 +19,7 @@ fn main() {
 
     // image
     let ideal_aspect_ratio = 16.0 / 9.0;
-    let image_width = 100;
+    let image_width = 400;
 
     // calculate image height
     let image_height = int(float(image_width) / ideal_aspect_ratio);
@@ -71,19 +71,25 @@ const BLUE: Colour = Colour::new(0.5, 0.7, 1.0);
 const WHITE: Colour = Colour::new(1.0, 1.0, 1.0);
 const RED: Colour = Colour::new(1.0, 0.0, 0.0);
 
-fn hit_sphere(center: Vec3, radius: f64, ray: &Ray) -> bool {
+fn hit_sphere(center: Vec3, radius: f64, ray: &Ray) -> f64 {
     let oc = ray.origin() - center;
     let a = ray.direction() * ray.direction();
     let b = 2.0 * (oc * ray.direction());
     let c = (oc * oc) - (radius * radius);
 
     let discriminant = (b * b) - (4.0 * a * c);
-    discriminant > 0.0
+    if discriminant < 0. {
+        -1.
+    } else {
+        (-b - discriminant.sqrt()) / (2. / a)
+    }
 }
 
 fn ray_colour(ray: Ray) -> Colour {
-    if hit_sphere(Point3::new(0.0, 0.0, -1.0), -0.5, &ray) {
-        return RED;
+    let t = hit_sphere(Point3::new(0.0, 0.0, -1.0), -0.5, &ray);
+    if t > 0. {
+        let n = (ray.at(t) - Vec3::new(0., 0., -1.)).unit_vector();
+        return Colour::new(n.x + 1., n.y + 1., n.z + 1.) / 2.;
     }
 
     let unit_direction = ray.direction().unit_vector();
