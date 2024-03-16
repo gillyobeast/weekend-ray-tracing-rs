@@ -4,9 +4,31 @@ use crate::{
 };
 
 pub(crate) struct HitRecord {
-    pub(crate) point: Point3,
-    pub(crate) normal: Vec3,
-    pub(crate) t: f64,
+    point: Point3,
+    normal: Vec3,
+    t: f64,
+    front_face: bool,
+}
+
+impl HitRecord {
+    /// sets the hit record normal vector
+    /// outward_normal is assumed to have unit length
+    pub(crate) fn new(point: Vec3, t: f64, outward_normal: &Vec3, ray: &Ray) -> Self {
+        let front_face = (&ray.direction() * outward_normal) < 0.0;
+
+        let normal = if front_face {
+            outward_normal.clone()
+        } else {
+            -outward_normal
+        };
+
+        Self {
+            point,
+            normal,
+            t,
+            front_face,
+        }
+    }
 }
 
 pub(crate) trait Hittable {

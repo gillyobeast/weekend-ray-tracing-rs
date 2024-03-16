@@ -35,10 +35,6 @@ impl Hittable for Sphere {
 
         let point = ray.at(root);
         let normal = (point - self.center) / self.radius;
-        Some(HitRecord {
-            point,
-            normal,
-            t: root,
-        })
+        Some(HitRecord::new(point, root, &normal, ray))
     }
 }

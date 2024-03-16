@@ -54,6 +54,17 @@ impl Neg for Vec3 {
         }
     }
 }
+impl Neg for &Vec3 {
+    type Output = Vec3;
+
+    fn neg(self) -> Self::Output {
+        Vec3 {
+            x: -self.x,
+            y: -self.y,
+            z: -self.z,
+        }
+    }
+}
 impl Add for Vec3 {
     type Output = Vec3;
 
@@ -103,6 +114,13 @@ impl Mul<Vec3> for Vec3 {
     type Output = f64;
 
     fn mul(self, other: Vec3) -> f64 {
+        self.x * other.x + self.y * other.y + self.z * other.z
+    }
+}
+impl Mul<&Vec3> for &Vec3 {
+    type Output = f64;
+
+    fn mul(self, other: &Vec3) -> f64 {
         self.x * other.x + self.y * other.y + self.z * other.z
     }
 }
