@@ -8,7 +8,9 @@ use crate::ray::Ray;
 use crate::vec3::{Point3, Vec3};
 
 mod color;
+mod hittable;
 mod ray;
+mod sphere;
 mod vec3;
 
 fn main() {
