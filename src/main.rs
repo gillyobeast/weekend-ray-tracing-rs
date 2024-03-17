@@ -87,7 +87,7 @@ const BLUE: Colour = Colour::new(0.5, 0.7, 1.0);
 const WHITE: Colour = Colour::new(1.0, 1.0, 1.0);
 
 fn ray_colour(ray: &Ray, world: &dyn Hittable) -> Colour {
-    if let Some(hit_record) = world.hit(ray, 0.0, INFINITY) {
+    if let Some(hit_record) = world.hit_range(ray, 0.0..INFINITY) {
         return (hit_record.normal() + WHITE) / 2.0;
     }
 

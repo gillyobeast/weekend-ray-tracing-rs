@@ -15,7 +15,7 @@ impl Sphere {
 }
 
 impl Hittable for Sphere {
-    fn hit(&self, ray: &crate::ray::Ray, ray_t_min: f64, ray_t_max: f64) -> Option<HitRecord> {
+    fn hit_range(&self, ray: &crate::ray::Ray, range: std::ops::Range<f64>) -> Option<HitRecord> {
         let r_squared = self.radius * self.radius;
 
         let oc = ray.origin() - self.center;
@@ -30,11 +30,11 @@ impl Hittable for Sphere {
         let sqrt_d = discriminant.sqrt();
 
         // find the nearest root that lies in the acceptable range:
-        let acceptable_range = ray_t_min..ray_t_max;
+
         let root = (-half_b - sqrt_d) / a;
-        if !acceptable_range.contains(&root) {
+        if !range.contains(&root) {
             let root = (-half_b + sqrt_d) / a;
-            if !acceptable_range.contains(&root) {
+            if !range.contains(&root) {
                 return None;
             }
         }

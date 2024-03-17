@@ -13,18 +13,17 @@ impl HittableList {
 }
 
 impl Hittable for HittableList {
-    fn hit(
+    fn hit_range(
         &self,
         ray: &crate::ray::Ray,
-        ray_t_min: f64,
-        ray_t_max: f64,
+        range: std::ops::Range<f64>,
     ) -> Option<crate::hittable::HitRecord> {
         // hmm this is imperative as hell, i hate it...
         let mut temp_rec = None;
-        let mut closest_t = ray_t_max;
+        let mut closest_t = range.end;
 
         for hittable in &self.hittables {
-            if let Some(hit_record) = hittable.hit(ray, ray_t_min, closest_t) {
+            if let Some(hit_record) = hittable.hit_range(ray, range.start..closest_t) {
                 closest_t = hit_record.t();
                 temp_rec = Some(hit_record);
             }

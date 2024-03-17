@@ -1,3 +1,5 @@
+use std::ops::Range;
+
 use crate::{
     ray::Ray,
     vec3::{Point3, Vec3},
@@ -39,5 +41,5 @@ impl HitRecord {
 }
 
 pub(crate) trait Hittable {
-    fn hit(&self, ray: &Ray, ray_t_min: f64, ray_t_max: f64) -> Option<HitRecord>;
+    fn hit_range(&self, ray: &Ray, range: Range<f64>) -> Option<HitRecord>;
 }
