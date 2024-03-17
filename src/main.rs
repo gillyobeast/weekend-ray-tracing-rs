@@ -19,6 +19,7 @@ mod hittable_list;
 mod ray;
 mod sphere;
 mod vec3;
+mod camera;
 
 fn main() {
     let start = SystemTime::now();
