@@ -29,11 +29,15 @@ impl HitRecord {
             front_face,
         }
     }
-    pub(crate) fn get_t(&self) -> f64 {
+    pub(crate) fn t(&self) -> f64 {
         self.t
+    }
+
+    pub(crate) fn normal(&self) -> Vec3 {
+        self.normal
     }
 }
 
 pub(crate) trait Hittable {
-    fn hit(self, ray: &Ray, ray_t_min: f64, ray_t_max: f64) -> Option<HitRecord>;
+    fn hit(&self, ray: &Ray, ray_t_min: f64, ray_t_max: f64) -> Option<HitRecord>;
 }

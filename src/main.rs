@@ -1,19 +1,24 @@
+use std::collections::LinkedList;
+use std::f64::INFINITY;
 use std::fs::File;
 use std::io::Write;
 use std::time::SystemTime;
 
 use color::{write, Colour};
+use hittable::Hittable;
 
+use crate::hittable_list::HittableList;
 use crate::ray::Ray;
+use crate::sphere::Sphere;
 use crate::vec3::{Point3, Vec3};
 
 mod color;
+mod common;
 mod hittable;
+mod hittable_list;
 mod ray;
 mod sphere;
 mod vec3;
-mod hittable_list;
-mod common;
 
 fn main() {
     let start = SystemTime::now();
@@ -30,6 +35,13 @@ fn main() {
     let image_height = if image_height < 1 { 1 } else { image_height };
 
     let effective_aspect_ratio = float(image_width) / float(image_height);
+
+    // world
+
+    let mut hittables = LinkedList::new();
+    hittables.push_front(Sphere::new(Vec3::new(0.0, 0.0, -1.0), 0.5));
+    hittables.push_front(Sphere::new(Vec3::new(0.0, -100.5, -1.0), 100.0));
+    let world = HittableList::new(hittables);
 
     // camera
     let focal_length = 1.0;
@@ -63,7 +75,7 @@ fn main() {
             let ray_direction = pixel_center - camera_center;
             let ray = Ray::new(camera_center, ray_direction);
 
-            let colour = ray_colour(ray);
+            let colour = ray_colour(&ray, &world);
             write(&mut image, colour);
         }
     }
@@ -74,26 +86,9 @@ fn main() {
 const BLUE: Colour = Colour::new(0.5, 0.7, 1.0);
 const WHITE: Colour = Colour::new(1.0, 1.0, 1.0);
 
-fn hit_sphere(center: Vec3, radius: f64, ray: &Ray) -> f64 {
-    let oc = ray.origin() - center;
-    let a = ray.direction().length_squared();
-    let half_b = oc * ray.direction();
-    let c = oc.length_squared() - radius * radius;
-
-    let discriminant = (half_b * half_b) - (a * c);
-
-    if discriminant < 0. {
-        -1.
-    } else {
-        (-half_b - discriminant.sqrt()) / a
-    }
-}
-
-fn ray_colour(ray: Ray) -> Colour {
-    let t = hit_sphere(Point3::new(0.0, 0.0, -1.0), -0.5, &ray);
-    if t > 0. {
-        let n = (ray.at(t) - Vec3::new(0., 0., -1.)).unit_vector();
-        return Colour::new(n.x + 1., n.y + 1., n.z + 1.) / 2.;
+fn ray_colour(ray: &Ray, world: &dyn Hittable) -> Colour {
+    if let Some(hit_record) = world.hit(ray, 0.0, INFINITY) {
+        return (hit_record.normal() + WHITE) / 2.0;
     }
 
     let unit_direction = ray.direction().unit_vector();

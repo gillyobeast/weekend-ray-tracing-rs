@@ -14,7 +14,7 @@ impl HittableList {
 
 impl Hittable for HittableList {
     fn hit(
-        self,
+        &self,
         ray: &crate::ray::Ray,
         ray_t_min: f64,
         ray_t_max: f64,
@@ -23,9 +23,9 @@ impl Hittable for HittableList {
         let mut temp_rec = None;
         let mut closest_t = ray_t_max;
 
-        for hittable in self.hittables {
+        for hittable in &self.hittables {
             if let Some(hit_record) = hittable.hit(ray, ray_t_min, closest_t) {
-                closest_t = hit_record.get_t();
+                closest_t = hit_record.t();
                 temp_rec = Some(hit_record);
             }
         }

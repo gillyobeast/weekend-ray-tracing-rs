@@ -8,8 +8,14 @@ pub(crate) struct Sphere {
     radius: f64,
 }
 
+impl Sphere {
+    pub(crate) fn new(center: Point3, radius: f64) -> Self {
+        Self { center, radius }
+    }
+}
+
 impl Hittable for Sphere {
-    fn hit(self, ray: &crate::ray::Ray, ray_t_min: f64, ray_t_max: f64) -> Option<HitRecord> {
+    fn hit(&self, ray: &crate::ray::Ray, ray_t_min: f64, ray_t_max: f64) -> Option<HitRecord> {
         let r_squared = self.radius * self.radius;
 
         let oc = ray.origin() - self.center;
