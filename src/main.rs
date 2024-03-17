@@ -12,6 +12,7 @@ mod hittable;
 mod ray;
 mod sphere;
 mod vec3;
+mod hittable_list;
 
 fn main() {
     let start = SystemTime::now();
@@ -71,12 +72,11 @@ fn main() {
 
 const BLUE: Colour = Colour::new(0.5, 0.7, 1.0);
 const WHITE: Colour = Colour::new(1.0, 1.0, 1.0);
-const RED: Colour = Colour::new(1.0, 0.0, 0.0);
 
 fn hit_sphere(center: Vec3, radius: f64, ray: &Ray) -> f64 {
     let oc = ray.origin() - center;
     let a = ray.direction().length_squared();
-    let half_b = (oc * ray.direction());
+    let half_b = oc * ray.direction();
     let c = oc.length_squared() - radius * radius;
 
     let discriminant = (half_b * half_b) - (a * c);

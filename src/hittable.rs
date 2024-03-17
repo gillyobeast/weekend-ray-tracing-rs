@@ -29,6 +29,9 @@ impl HitRecord {
             front_face,
         }
     }
+    pub(crate) fn get_t(&self) -> f64 {
+        self.t
+    }
 }
 
 pub(crate) trait Hittable {

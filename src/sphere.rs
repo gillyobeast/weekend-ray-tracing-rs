@@ -3,7 +3,7 @@ use crate::{
     vec3::Point3,
 };
 
-struct Sphere {
+pub(crate) struct Sphere {
     center: Point3,
     radius: f64,
 }
