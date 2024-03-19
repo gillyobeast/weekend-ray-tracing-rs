@@ -1,7 +1,7 @@
 use std::{f64::INFINITY, fs::File, io::Write};
 
 use crate::{
-    color::{write, Colour, BLUE, WHITE},
+    colour::{write, Colour, BLUE, WHITE},
     hittable::Hittable,
     ray::Ray,
     vec3::{Point3, Vec3},

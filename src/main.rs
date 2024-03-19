@@ -8,7 +8,7 @@ use crate::sphere::Sphere;
 use crate::vec3::Vec3;
 
 mod camera;
-mod color;
+mod colour;
 mod common;
 mod hittable;
 mod hittable_list;
