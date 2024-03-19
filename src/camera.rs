@@ -9,6 +9,7 @@ use crate::{
 pub(crate) struct Camera {
     // pub aspect_ratio: f64,     // ratio of image width over height
     pub image_width: u32,      // rendered image width in px
+    samples_per_pixel: u32,    // count of random samples per px
     image_height: u32,         // rendered image height
     center: Point3,            // camera center
     pixel_00_location: Point3, // location of px 0,0
@@ -18,7 +19,7 @@ pub(crate) struct Camera {
 
 impl Camera {
     // private fns for supporting render
-    pub(crate) fn new(ideal_aspect_ratio: f64, image_width: u32) -> Self {
+    pub(crate) fn new(ideal_aspect_ratio: f64, image_width: u32, samples_per_pixel: u32) -> Self {
         let image_height = (image_width as f64 / ideal_aspect_ratio) as u32;
         let image_height = if image_height < 1 { 1 } else { image_height };
         let center = Point3::origin();
@@ -45,6 +46,7 @@ impl Camera {
         Self {
             // aspect_ratio,
             image_width,
+            samples_per_pixel,
             image_height,
             center,
             pixel_00_location,
@@ -62,6 +64,22 @@ impl Camera {
 
         let a = (unit_direction.y + 1.0) / 2.0;
         WHITE * (1.0 - a) + BLUE * a
+    }
+
+    /// get a randomly sampled camera ray for the pixel at i, j
+    fn get_ray(&self, i: u32, j: u32) -> Ray {
+        let pixel_center = self.pixel_00_location
+            + (self.pixel_delta_u * i as f64)
+            + (self.pixel_delta_v * j as f64);
+        let pixel_sample = pixel_center + self.pixel_sample_square();
+        let ray_direction = pixel_sample - self.center;
+        Ray::new(self.center, ray_direction)
+    }
+
+    fn pixel_sample_square(&self) -> Vec3 {
+        let px = -0.5 * random_f64();
+        let py = -0.5 * random_f64();
+        self.pixel_delta_u * px + self.pixel_delta_v * py
     }
 }
 
@@ -83,16 +101,19 @@ impl Renderer for Camera {
         for j in 0..self.image_height {
             print!("\rScanlines remaining: {}  ", self.image_height - j);
             for i in 0..self.image_width {
-                let pixel_center = self.pixel_00_location
-                    + (self.pixel_delta_u * i as f64)
-                    + (self.pixel_delta_v * j as f64);
-                let ray_direction = pixel_center - self.center;
-                let ray = Ray::new(self.center, ray_direction);
-
-                let colour = self.ray_colour(&ray, world);
-                write(&mut image, colour);
+                let mut pixel_colour = Colour::origin();
+                for _sample in 0..self.samples_per_pixel {
+                    let ray = self.get_ray(i, j);
+                    // mutability is bad
+                    pixel_colour += self.ray_colour(&ray, world);
+                }
+                write(&mut image, pixel_colour, self.samples_per_pixel)
             }
         }
         println!("\rDone!                    ");
     }
+}
+
+fn random_f64() -> f64 {
+    rand::random::<f64>()
 }

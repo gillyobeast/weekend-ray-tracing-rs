@@ -22,8 +22,9 @@ fn main() {
     // image
     let ideal_aspect_ratio = 16.0 / 9.0;
     let image_width = 400;
+    let samples_per_pixel = 100;
 
-    let camera = Camera::new(ideal_aspect_ratio, image_width);
+    let camera = Camera::new(ideal_aspect_ratio, image_width, samples_per_pixel);
     // world
 
     let mut hittables = LinkedList::new();
