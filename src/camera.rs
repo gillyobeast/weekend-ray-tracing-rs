@@ -1,15 +1,11 @@
 use std::{f64::INFINITY, fs::File, io::Write};
 
 use crate::{
-    color::{write, Colour},
+    color::{write, Colour, BLUE, WHITE},
     hittable::Hittable,
     ray::Ray,
     vec3::{Point3, Vec3},
 };
-
-const BLUE: Colour = Colour::new(0.5, 0.7, 1.0);
-const WHITE: Colour = Colour::new(1.0, 1.0, 1.0);
-
 pub(crate) struct Camera {
     // pub aspect_ratio: f64,     // ratio of image width over height
     pub image_width: u32,      // rendered image width in px
