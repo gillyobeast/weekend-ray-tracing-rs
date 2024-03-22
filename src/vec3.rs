@@ -1,6 +1,8 @@
 use std::fmt::Debug;
 use std::ops::{Add, AddAssign, Div, Mul, Neg, Sub};
 
+use rand::{random, thread_rng, Rng};
+
 // unsure if pub is a good idea...
 #[derive(Debug)]
 pub(crate) struct Vec3 {
@@ -40,6 +42,33 @@ impl Vec3 {
     pub(crate) fn unit_vector(self) -> Self {
         let x = self.length();
         self / x
+    }
+
+    pub(crate) fn random() -> Self {
+        Self {
+            x: random(),
+            y: random(),
+            z: random(),
+        }
+    }
+    pub(crate) fn random_in_range(min: f64, max: f64) -> Self {
+        let mut r = thread_rng();
+
+        Self {
+            x: r.gen_range(min..max),
+            y: r.gen_range(min..max),
+            z: r.gen_range(min..max),
+        }
+    }
+
+    pub(crate) fn random_in_unit_sphere() -> Vec3 {
+        loop {
+            // get a random vector in the unit box
+            let random = Vec3::random_in_range(-1.0, 1.0);
+            if random.length_squared() < 1.0 {
+                return random;
+            }
+        }
     }
 }
 
